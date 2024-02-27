@@ -1,0 +1,142 @@
+<html>
+<head>
+<title>MainActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #2aacb8;}
+.s5 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MainActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">brain_tumor_detection_app</span><span class="s2">;</span>
+
+<span class="s0">import static </span><span class="s1">androidx</span><span class="s2">.</span><span class="s1">constraintlayout</span><span class="s2">.</span><span class="s1">helper</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">MotionEffect</span><span class="s2">.</span><span class="s1">TAG</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">androidx</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Nullable</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">androidx</span><span class="s2">.</span><span class="s1">appcompat</span><span class="s2">.</span><span class="s1">app</span><span class="s2">.</span><span class="s1">AppCompatActivity</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">content</span><span class="s2">.</span><span class="s1">Intent</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">graphics</span><span class="s2">.</span><span class="s1">Bitmap</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">net</span><span class="s2">.</span><span class="s1">Uri</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">os</span><span class="s2">.</span><span class="s1">Bundle</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">os</span><span class="s2">.</span><span class="s1">StrictMode</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">provider</span><span class="s2">.</span><span class="s1">MediaStore</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Log</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">view</span><span class="s2">.</span><span class="s1">View</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">Button</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">ImageView</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">TextView</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">android</span><span class="s2">.</span><span class="s1">widget</span><span class="s2">.</span><span class="s1">Toast</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">brain_tumor_detection_app</span><span class="s2">.</span><span class="s1">ml</span><span class="s2">.</span><span class="s1">Model3</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">tensorflow</span><span class="s2">.</span><span class="s1">lite</span><span class="s2">.</span><span class="s1">DataType</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">tensorflow</span><span class="s2">.</span><span class="s1">lite</span><span class="s2">.</span><span class="s1">support</span><span class="s2">.</span><span class="s1">image</span><span class="s2">.</span><span class="s1">TensorImage</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">tensorflow</span><span class="s2">.</span><span class="s1">lite</span><span class="s2">.</span><span class="s1">support</span><span class="s2">.</span><span class="s1">tensorbuffer</span><span class="s2">.</span><span class="s1">TensorBuffer</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.</span><span class="s1">IOException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">nio</span><span class="s2">.</span><span class="s1">ByteBuffer</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">MainActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity </span><span class="s2">{</span>
+    <span class="s0">private </span><span class="s1">Button select</span><span class="s2">, </span><span class="s1">predict</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">ImageView imageView</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">TextView output</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">Bitmap img</span><span class="s2">;</span>
+
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate</span><span class="s2">(</span><span class="s1">Bundle savedInstanceState</span><span class="s2">) {</span>
+        <span class="s0">super</span><span class="s2">.</span><span class="s1">onCreate</span><span class="s2">(</span><span class="s1">savedInstanceState</span><span class="s2">);</span>
+        <span class="s1">setContentView</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">layout</span><span class="s2">.</span><span class="s1">activity_main</span><span class="s2">);</span>
+        <span class="s1">select </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">select</span><span class="s2">);</span>
+        <span class="s1">predict </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">predict</span><span class="s2">);</span>
+        <span class="s1">imageView </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">imageview</span><span class="s2">);</span>
+        <span class="s1">output </span><span class="s2">= </span><span class="s1">findViewById</span><span class="s2">(</span><span class="s1">R</span><span class="s2">.</span><span class="s1">id</span><span class="s2">.</span><span class="s1">textView</span><span class="s2">);</span>
+
+        <span class="s1">select</span><span class="s2">.</span><span class="s1">setOnClickListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">View</span><span class="s2">.</span><span class="s1">OnClickListener</span><span class="s2">() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick</span><span class="s2">(</span><span class="s1">View v</span><span class="s2">) {</span>
+                <span class="s1">Intent intent </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Intent</span><span class="s2">(</span><span class="s1">Intent</span><span class="s2">.</span><span class="s1">ACTION_GET_CONTENT</span><span class="s2">);</span>
+                <span class="s1">intent</span><span class="s2">.</span><span class="s1">setType</span><span class="s2">(</span><span class="s3">&quot;image/*&quot;</span><span class="s2">);</span>
+                <span class="s1">startActivityForResult</span><span class="s2">(</span><span class="s1">intent</span><span class="s2">, </span><span class="s4">100</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">});</span>
+
+
+        <span class="s1">predict</span><span class="s2">.</span><span class="s1">setOnClickListener</span><span class="s2">(</span><span class="s0">new </span><span class="s1">View</span><span class="s2">.</span><span class="s1">OnClickListener</span><span class="s2">() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick</span><span class="s2">(</span><span class="s1">View v</span><span class="s2">) {</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">img </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+                    <span class="s1">img </span><span class="s2">= </span><span class="s1">Bitmap</span><span class="s2">.</span><span class="s1">createScaledBitmap</span><span class="s2">(</span><span class="s1">img</span><span class="s2">, </span><span class="s4">150</span><span class="s2">, </span><span class="s4">150</span><span class="s2">, </span><span class="s0">true</span><span class="s2">);</span>
+                    <span class="s0">try </span><span class="s2">{</span>
+
+                        <span class="s1">Model3 model </span><span class="s2">= </span><span class="s1">Model3</span><span class="s2">.</span><span class="s1">newInstance</span><span class="s2">(</span><span class="s1">getApplicationContext</span><span class="s2">());</span>
+
+                        <span class="s5">// Creates inputs for reference.</span>
+                        <span class="s1">TensorBuffer inputFeature0 </span><span class="s2">= </span><span class="s1">TensorBuffer</span><span class="s2">.</span><span class="s1">createFixedSize</span><span class="s2">(</span><span class="s0">new int</span><span class="s2">[]{</span><span class="s4">1</span><span class="s2">, </span><span class="s4">150</span><span class="s2">, </span><span class="s4">150</span><span class="s2">, </span><span class="s4">3</span><span class="s2">}, </span><span class="s1">DataType</span><span class="s2">.</span><span class="s1">FLOAT32</span><span class="s2">);</span>
+
+                        <span class="s1">TensorImage tensorImage </span><span class="s2">= </span><span class="s0">new </span><span class="s1">TensorImage</span><span class="s2">(</span><span class="s1">DataType</span><span class="s2">.</span><span class="s1">FLOAT32</span><span class="s2">);</span>
+                        <span class="s1">tensorImage</span><span class="s2">.</span><span class="s1">load</span><span class="s2">(</span><span class="s1">img</span><span class="s2">);</span>
+                        <span class="s1">ByteBuffer byteBuffer </span><span class="s2">= </span><span class="s1">tensorImage</span><span class="s2">.</span><span class="s1">getBuffer</span><span class="s2">();</span>
+                        <span class="s1">inputFeature0</span><span class="s2">.</span><span class="s1">loadBuffer</span><span class="s2">(</span><span class="s1">byteBuffer</span><span class="s2">);</span>
+
+                        <span class="s5">// Runs model inference and gets result.</span>
+                        <span class="s1">Model3</span><span class="s2">.</span><span class="s1">Outputs outputs </span><span class="s2">= </span><span class="s1">model</span><span class="s2">.</span><span class="s1">process</span><span class="s2">(</span><span class="s1">inputFeature0</span><span class="s2">);</span>
+                        <span class="s1">TensorBuffer outputFeature0 </span><span class="s2">= </span><span class="s1">outputs</span><span class="s2">.</span><span class="s1">getOutputFeature0AsTensorBuffer</span><span class="s2">();</span>
+                        <span class="s1">output</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">outputFeature0</span><span class="s2">.</span><span class="s1">getFloatArray</span><span class="s2">()[</span><span class="s4">0</span><span class="s2">] + </span><span class="s3">&quot;</span><span class="s0">\n</span><span class="s3">&quot; </span><span class="s2">+ </span><span class="s1">outputFeature0</span><span class="s2">.</span><span class="s1">getFloatArray</span><span class="s2">()[</span><span class="s4">0</span><span class="s2">]);</span>
+
+                        <span class="s0">if </span><span class="s2">(</span><span class="s1">outputFeature0</span><span class="s2">.</span><span class="s1">getFloatArray</span><span class="s2">()[</span><span class="s4">0</span><span class="s2">] == </span><span class="s4">1.0</span><span class="s2">) {</span>
+                            <span class="s1">output</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s3">&quot;NO Brain Tumor&quot;</span><span class="s2">);</span>
+                        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                            <span class="s1">output</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s3">&quot;YES Brain Tumor&quot;</span><span class="s2">);</span>
+                        <span class="s2">}</span>
+
+                        <span class="s5">// Releases model resources if no longer used.</span>
+                        <span class="s1">model</span><span class="s2">.</span><span class="s1">close</span><span class="s2">();</span>
+                    <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">IOException e</span><span class="s2">) {</span>
+                        <span class="s1">Log</span><span class="s2">.</span><span class="s1">e</span><span class="s2">(</span><span class="s1">TAG</span><span class="s2">, </span><span class="s3">&quot;Error loading TensorFlow Lite model&quot;</span><span class="s2">, </span><span class="s1">e</span><span class="s2">);</span>
+                        <span class="s5">// TODO Handle the exception</span>
+                    <span class="s2">}</span>
+                <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                    <span class="s1">Toast</span><span class="s2">.</span><span class="s1">makeText</span><span class="s2">(</span><span class="s1">MainActivity</span><span class="s2">.</span><span class="s0">this</span><span class="s2">, </span><span class="s3">&quot;Please Upload Image&quot;</span><span class="s2">, </span><span class="s1">Toast</span><span class="s2">.</span><span class="s1">LENGTH_SHORT</span><span class="s2">).</span><span class="s1">show</span><span class="s2">();</span>
+                <span class="s2">}</span>
+
+            <span class="s2">}</span>
+
+
+        <span class="s2">});</span>
+    <span class="s2">}</span>
+
+
+
+
+
+        <span class="s1">@Override</span>
+        <span class="s0">protected void </span><span class="s1">onActivityResult</span><span class="s2">(</span><span class="s0">int </span><span class="s1">requestCode</span><span class="s2">, </span><span class="s0">int </span><span class="s1">resultCode</span><span class="s2">, </span><span class="s1">@Nullable Intent data</span><span class="s2">) {</span>
+            <span class="s0">super</span><span class="s2">.</span><span class="s1">onActivityResult</span><span class="s2">(</span><span class="s1">requestCode</span><span class="s2">, </span><span class="s1">resultCode</span><span class="s2">, </span><span class="s1">data</span><span class="s2">);</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">requestCode </span><span class="s2">== </span><span class="s4">100</span><span class="s2">) {</span>
+                <span class="s1">imageView</span><span class="s2">.</span><span class="s1">setImageURI</span><span class="s2">(</span><span class="s1">data</span><span class="s2">.</span><span class="s1">getData</span><span class="s2">());</span>
+                <span class="s1">Uri uri </span><span class="s2">= </span><span class="s1">data</span><span class="s2">.</span><span class="s1">getData</span><span class="s2">();</span>
+                <span class="s0">try </span><span class="s2">{</span>
+                    <span class="s1">img </span><span class="s2">= </span><span class="s1">MediaStore</span><span class="s2">.</span><span class="s1">Images</span><span class="s2">.</span><span class="s1">Media</span><span class="s2">.</span><span class="s1">getBitmap</span><span class="s2">(</span><span class="s0">this</span><span class="s2">.</span><span class="s1">getContentResolver</span><span class="s2">(), </span><span class="s1">uri</span><span class="s2">);</span>
+                <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">IOException e</span><span class="s2">) {</span>
+                    <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+<span class="s2">}</span>
+
+
+
+</pre>
+</body>
+</html>
